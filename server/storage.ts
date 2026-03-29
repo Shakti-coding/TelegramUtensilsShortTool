@@ -102,7 +102,7 @@ export class MemStorage implements IStorage {
   private gitTokenConfigs: Map<number, GitTokenConfig> = new Map();
   private cachedRepositories: Map<string, GitRepository> = new Map();
   private tokenIdCounter: number = 1;
-  private defaultPAT: string = process.env.GITHUB_PERSONAL_ACCESS_TOKEN || process.env.GITHUB_PAT || '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';
+  private defaultPAT: string = process.env.GITHUB_PERSONAL_ACCESS_TOKEN || process.env.GITHUB_PAT || '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';
 
   // TextMemo storage maps
   private textMemos: Map<number, TextMemo> = new Map();

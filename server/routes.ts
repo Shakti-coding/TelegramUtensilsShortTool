@@ -1950,6 +1950,81 @@ if __name__ == "__main__":
   // Live Cloning Management API (Telegram Live Sender)
   // =====================================================
 
+  // Test live cloning session string
+  app.post('/api/live-cloning/test-session', async (req, res) => {
+    try {
+      const { sessionString } = req.body;
+      
+      if (!sessionString) {
+        return res.status(400).json({ error: 'Session string is required' });
+      }
+
+      const telegramConfig = configReader.getTelegramConfig();
+      const testScriptPath = path.join(process.cwd(), 'bot_source', 'live-cloning', 'test_session.py');
+      
+      const testScript = `
+import asyncio
+import json
+import sys
+from telethon import TelegramClient
+from telethon.sessions import StringSession
+
+async def test_session():
+    try:
+        session = StringSession("${sessionString}")
+        async with TelegramClient(session, ${telegramConfig.api_id}, "${telegramConfig.api_hash}") as client:
+            me = await client.get_me()
+            return {
+                "success": True,
+                "userInfo": {
+                    "id": me.id,
+                    "username": me.username or "No username",
+                    "firstName": me.first_name or ""
+                }
+            }
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+if __name__ == "__main__":
+    result = asyncio.run(test_session())
+    print(json.dumps(result))
+`;
+
+      fs.writeFileSync(testScriptPath, testScript);
+
+      const testProcess = spawn('python3', [testScriptPath], { 
+        cwd: path.dirname(testScriptPath),
+        timeout: 30000
+      });
+
+      let output = '';
+      testProcess.stdout?.on('data', (data) => { output += data.toString(); });
+      testProcess.stderr?.on('data', (data) => { output += data.toString(); });
+
+      testProcess.on('close', (code) => {
+        try {
+          if (fs.existsSync(testScriptPath)) fs.unlinkSync(testScriptPath);
+          if (output.trim()) {
+            const result = JSON.parse(output.trim().split('\n').pop() || '{}');
+            if (result.success) {
+              res.json({ success: true, userInfo: result.userInfo });
+            } else {
+              res.status(400).json({ error: result.error || 'Session validation failed' });
+            }
+          } else {
+            res.status(500).json({ error: 'No output from session test' });
+          }
+        } catch (parseError) {
+          console.error('Failed to parse test output:', output);
+          res.status(500).json({ error: 'Failed to parse session test result' });
+        }
+      });
+
+    } catch (error) {
+      console.error('Failed to test live cloning session:', error);
+      res.status(500).json({ error: 'Failed to test session string' });
+    }
+  });
 
   // Start live cloning bot
   app.post('/api/live-cloning/start', async (req, res) => {

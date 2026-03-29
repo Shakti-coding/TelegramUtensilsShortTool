@@ -79,6 +79,7 @@ interface LiveCloningStatus {
 
 export function LiveCloning() {
   const [sessionString, setSessionString] = useState('');
+  const [loginStatus, setLoginStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
   const [entityLinks, setEntityLinks] = useState<EntityLink[]>([]);
   const [wordFilters, setWordFilters] = useState<WordFilter[]>([]);
   const [showLogs, setShowLogs] = useState(false);
@@ -537,6 +538,41 @@ export function LiveCloning() {
     },
   });
 
+  // Test live cloning session string
+  const testSessionMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/live-cloning/test-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionString: sessionString.trim() }),
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to test session');
+      }
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setLoginStatus('success');
+      localStorage.setItem('generator_telethon_session', sessionString.trim());
+      toast({
+        title: 'Session Valid! ✅',
+        description: `Logged in as ${data.userInfo.firstName} (@${data.userInfo.username}) - ID: ${data.userInfo.id}`
+      });
+    },
+    onError: (error: Error) => {
+      setLoginStatus('error');
+      toast({
+        title: 'Session Invalid ❌',
+        description: error.message,
+        variant: 'destructive'
+      });
+    },
+    onMutate: () => {
+      setLoginStatus('testing');
+    }
+  });
+
   // Remove entity link mutation
   const removeEntityLinkMutation = useMutation({
     mutationFn: async (linkId: number) => {
@@ -864,6 +900,7 @@ export function LiveCloning() {
                 value={sessionString}
                 onChange={(e) => {
                   setSessionString(e.target.value);
+                  setLoginStatus('idle');
                 }}
                 className="min-h-[100px] font-mono text-sm"
                 data-testid="session-string-input"
@@ -877,7 +914,18 @@ export function LiveCloning() {
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center flex-wrap">
+              <Button
+                onClick={() => testSessionMutation.mutate()}
+                disabled={testSessionMutation.isPending || !sessionString.trim()}
+                variant={loginStatus === 'success' ? 'default' : 'outline'}
+                size="sm"
+                data-testid="button-test-session"
+              >
+                {testSessionMutation.isPending ? 'Testing...' :
+                 loginStatus === 'success' ? '✅ Session Valid' :
+                 loginStatus === 'error' ? '❌ Test Session' : '🔐 Test & Login'}
+              </Button>
               <Button
                 onClick={() => navigator.clipboard.writeText(sessionString)}
                 variant="ghost"
@@ -888,7 +936,15 @@ export function LiveCloning() {
               >
                 <Copy className="w-4 h-4" />
               </Button>
+              {loginStatus === 'success' && status.currentUserInfo && (
+                <div className="text-xs text-muted-foreground">
+                  Logged in as <strong>{status.currentUserInfo.firstName}</strong> (@{status.currentUserInfo.username}) - ID: {status.currentUserInfo.id}
+                </div>
+              )}
             </div>
+            <p className="text-xs text-muted-foreground">
+              Click "Test &amp; Login" to verify your session — if valid, it becomes the default for all copiers.
+            </p>
 
             {/* Bot Settings */}
             <div className="space-y-4 border-t pt-4">

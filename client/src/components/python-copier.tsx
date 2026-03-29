@@ -153,6 +153,7 @@ export function PythonCopier() {
     },
     onSuccess: (data) => {
       setLoginStatus('success');
+      localStorage.setItem('generator_telethon_session', sessionString.trim());
       toast({ 
         title: 'Session Valid! ✅', 
         description: `Logged in as ${data.userInfo.firstName} (@${data.userInfo.username}) - ID: ${data.userInfo.id}` 
