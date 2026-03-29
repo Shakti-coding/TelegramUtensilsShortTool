@@ -26,6 +26,7 @@ import type { TelegramSession } from '@shared/schema';
 import TextMemoPage from "@/pages/TextMemoPage";
 import Console from "@/components/Console";
 import PdfImg from "@/components/PdfImg";
+import { SessionGenerator } from "@/components/session-generator";
 import { WindowManagerProvider, useWindowManager } from '@/contexts/WindowManagerContext';
 import FloatingWindow from '@/components/FloatingWindow';
 
@@ -251,6 +252,8 @@ function HomeContent() {
         return <TextMemoPage />;
       case 'settings':
         return <Settings />;
+      case 'session-generator':
+        return <SessionGenerator />;
       default:
         return <PythonScriptMain />; // Default to Python script mode
     }

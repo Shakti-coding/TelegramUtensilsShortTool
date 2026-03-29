@@ -5118,6 +5118,290 @@ if __name__ == '__main__':
 `;
   }
 
+  // =====================================================
+  // Session Generator API (GramJS + Telethon)
+  // =====================================================
+
+  interface SessionGenEntry {
+    type: 'gramjs' | 'telethon';
+    status: 'starting' | 'sending_code' | 'waiting_code' | 'waiting_password' | 'done' | 'error';
+    sessionString?: string;
+    userInfo?: { name: string; phone: string; userId: string; username?: string };
+    error?: string;
+    // GramJS specific
+    client?: TelegramClient;
+    codeResolver?: (code: string) => void;
+    passwordResolver?: (pwd: string) => void;
+    // Telethon specific
+    process?: any;
+    sessionDir?: string;
+    createdAt: number;
+  }
+
+  const sessionGenMap = new Map<string, SessionGenEntry>();
+
+  // Cleanup old sessions after 15 minutes
+  setInterval(() => {
+    const now = Date.now();
+    for (const [id, entry] of sessionGenMap.entries()) {
+      if (now - entry.createdAt > 15 * 60 * 1000) {
+        if (entry.client) { try { entry.client.disconnect(); } catch (_) {} }
+        if (entry.process && !entry.process.killed) { entry.process.kill('SIGTERM'); }
+        sessionGenMap.delete(id);
+      }
+    }
+  }, 60000);
+
+  // --- GramJS session generator ---
+
+  app.post('/api/session-generator/gramjs/start', async (req, res) => {
+    try {
+      const { apiId, apiHash, phone } = req.body;
+      if (!apiId || !apiHash || !phone) {
+        return res.status(400).json({ error: 'apiId, apiHash, and phone are required' });
+      }
+
+      const sessionId = `gramjs_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const stringSession = new StringSession('');
+      const client = new TelegramClient(stringSession, parseInt(apiId), apiHash, {
+        connectionRetries: 3,
+        useWSS: true,
+      });
+
+      const entry: SessionGenEntry = {
+        type: 'gramjs',
+        status: 'starting',
+        client,
+        createdAt: Date.now(),
+      };
+      sessionGenMap.set(sessionId, entry);
+
+      // Start auth in background
+      (async () => {
+        try {
+          entry.status = 'sending_code';
+          await client.start({
+            phoneNumber: async () => phone,
+            phoneCode: async () => {
+              entry.status = 'waiting_code';
+              return new Promise<string>((resolve) => {
+                entry.codeResolver = resolve;
+              });
+            },
+            password: async () => {
+              entry.status = 'waiting_password';
+              return new Promise<string>((resolve) => {
+                entry.passwordResolver = resolve;
+              });
+            },
+            onError: (err) => {
+              entry.status = 'error';
+              entry.error = err.message;
+              throw err;
+            },
+          });
+
+          const sessionString = String(client.session.save());
+          const me: any = await client.getMe();
+          entry.sessionString = sessionString;
+          entry.userInfo = {
+            name: `${me.firstName || ''} ${me.lastName || ''}`.trim(),
+            phone: me.phone || phone,
+            userId: me.id?.toString() || '',
+            username: me.username || '',
+          };
+          entry.status = 'done';
+          await client.disconnect();
+        } catch (err: any) {
+          entry.status = 'error';
+          entry.error = err.message || 'Authentication failed';
+          try { await client.disconnect(); } catch (_) {}
+        }
+      })();
+
+      res.json({ sessionId });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/session-generator/gramjs/status/:sessionId', (req, res) => {
+    const entry = sessionGenMap.get(req.params.sessionId);
+    if (!entry) return res.status(404).json({ error: 'Session not found' });
+    res.json({
+      status: entry.status,
+      sessionString: entry.sessionString,
+      userInfo: entry.userInfo,
+      error: entry.error,
+    });
+  });
+
+  app.post('/api/session-generator/gramjs/send-code', (req, res) => {
+    const { sessionId, code } = req.body;
+    const entry = sessionGenMap.get(sessionId);
+    if (!entry) return res.status(404).json({ error: 'Session not found' });
+    if (entry.status !== 'waiting_code') return res.status(400).json({ error: 'Not waiting for code' });
+    if (!entry.codeResolver) return res.status(400).json({ error: 'No code resolver available' });
+    entry.status = 'sending_code';
+    entry.codeResolver(code);
+    entry.codeResolver = undefined;
+    res.json({ ok: true });
+  });
+
+  app.post('/api/session-generator/gramjs/send-password', (req, res) => {
+    const { sessionId, password } = req.body;
+    const entry = sessionGenMap.get(sessionId);
+    if (!entry) return res.status(404).json({ error: 'Session not found' });
+    if (entry.status !== 'waiting_password') return res.status(400).json({ error: 'Not waiting for password' });
+    if (!entry.passwordResolver) return res.status(400).json({ error: 'No password resolver available' });
+    entry.passwordResolver(password);
+    entry.passwordResolver = undefined;
+    res.json({ ok: true });
+  });
+
+  // --- Telethon session generator ---
+
+  app.post('/api/session-generator/telethon/start', async (req, res) => {
+    try {
+      const { apiId, apiHash, phone } = req.body;
+      if (!apiId || !apiHash || !phone) {
+        return res.status(400).json({ error: 'apiId, apiHash, and phone are required' });
+      }
+
+      const sessionId = `telethon_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const sessionDir = path.join(process.cwd(), 'tmp', 'session_gen', sessionId);
+      fs.mkdirSync(sessionDir, { recursive: true });
+
+      const entry: SessionGenEntry = {
+        type: 'telethon',
+        status: 'starting',
+        sessionDir,
+        createdAt: Date.now(),
+      };
+      sessionGenMap.set(sessionId, entry);
+
+      const scriptPath = path.join(process.cwd(), 'bot_source', 'session_generator.py');
+      const proc = spawn('python3', [scriptPath], {
+        env: {
+          ...process.env,
+          SESSION_DIR: sessionDir,
+          TG_API_ID: String(apiId),
+          TG_API_HASH: apiHash,
+          TG_PHONE: phone,
+        },
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+      entry.process = proc;
+
+      proc.stdout.on('data', (data: Buffer) => {
+        const lines = data.toString().split('\n').filter(Boolean);
+        for (const line of lines) {
+          try {
+            const msg = JSON.parse(line);
+            entry.status = msg.status;
+            if (msg.error) entry.error = msg.error;
+            if (msg.sessionString) entry.sessionString = msg.sessionString;
+            if (msg.userInfo) entry.userInfo = msg.userInfo;
+          } catch (_) {}
+        }
+      });
+
+      proc.stderr.on('data', (data: Buffer) => {
+        console.error('[session-gen-telethon]', data.toString());
+      });
+
+      proc.on('exit', (code: number) => {
+        if (entry.status !== 'done' && entry.status !== 'error') {
+          entry.status = 'error';
+          entry.error = `Python process exited with code ${code}`;
+        }
+        try { fs.rmSync(sessionDir, { recursive: true, force: true }); } catch (_) {}
+      });
+
+      res.json({ sessionId });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.get('/api/session-generator/telethon/status/:sessionId', (req, res) => {
+    const entry = sessionGenMap.get(req.params.sessionId);
+    if (!entry) return res.status(404).json({ error: 'Session not found' });
+    res.json({
+      status: entry.status,
+      sessionString: entry.sessionString,
+      userInfo: entry.userInfo,
+      error: entry.error,
+    });
+  });
+
+  app.post('/api/session-generator/telethon/send-code', (req, res) => {
+    const { sessionId, code } = req.body;
+    const entry = sessionGenMap.get(sessionId);
+    if (!entry || !entry.sessionDir) return res.status(404).json({ error: 'Session not found' });
+    if (entry.status !== 'waiting_code') return res.status(400).json({ error: 'Not waiting for code' });
+    try {
+      fs.writeFileSync(path.join(entry.sessionDir, 'input.json'), JSON.stringify({ code }));
+      entry.status = 'sending_code';
+      res.json({ ok: true });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  app.post('/api/session-generator/telethon/send-password', (req, res) => {
+    const { sessionId, password } = req.body;
+    const entry = sessionGenMap.get(sessionId);
+    if (!entry || !entry.sessionDir) return res.status(404).json({ error: 'Session not found' });
+    if (entry.status !== 'waiting_password') return res.status(400).json({ error: 'Not waiting for password' });
+    try {
+      fs.writeFileSync(path.join(entry.sessionDir, 'input.json'), JSON.stringify({ password }));
+      res.json({ ok: true });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // --- Store session permanently ---
+  app.post('/api/session-generator/store-permanent', (req, res) => {
+    try {
+      const { type, sessionString, userInfo } = req.body;
+      if (!type || !sessionString) return res.status(400).json({ error: 'type and sessionString required' });
+
+      const configDir = path.join(process.cwd(), 'config');
+      fs.mkdirSync(configDir, { recursive: true });
+      const filePath = path.join(configDir, 'generated_sessions.json');
+
+      let stored: any = {};
+      if (fs.existsSync(filePath)) {
+        try { stored = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch (_) {}
+      }
+
+      stored[type] = {
+        sessionString,
+        userInfo: userInfo || null,
+        storedAt: new Date().toISOString(),
+      };
+
+      fs.writeFileSync(filePath, JSON.stringify(stored, null, 2));
+      res.json({ ok: true, message: `${type} session stored permanently` });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Get stored permanent sessions
+  app.get('/api/session-generator/stored', (req, res) => {
+    try {
+      const filePath = path.join(process.cwd(), 'config', 'generated_sessions.json');
+      if (!fs.existsSync(filePath)) return res.json({});
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      res.json(data);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   return app;
 }
 

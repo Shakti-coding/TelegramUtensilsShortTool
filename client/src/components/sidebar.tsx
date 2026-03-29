@@ -23,6 +23,7 @@ import {
   Terminal,
   ImageIcon,
   Monitor,
+  KeyRound,
 } from 'lucide-react';
 import type { TelegramSession } from '@shared/schema';
 
@@ -54,6 +55,7 @@ const navigationItems = [
   { id: 'git-control', label: '⚡ Git Control', icon: Github },
   { id: 'text-memo', label: '📝 Text Memo', icon: FileText },
   { id: 'settings', label: 'Settings', icon: Settings },
+  { id: 'session-generator', label: '🔑 Session Generator', icon: KeyRound },
 ];
 
 export function Sidebar({
