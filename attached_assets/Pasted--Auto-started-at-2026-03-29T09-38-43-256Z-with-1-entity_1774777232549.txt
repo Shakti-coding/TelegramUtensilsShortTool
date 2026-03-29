@@ -1,0 +1,148 @@
+✅ Auto-started at 2026-03-29T09:38:43.256Z with 1 entity links
+[AUTO-STDERR] 2026-03-29T09:38:43.953Z: /home/runner/workspace/bot_source/live-cloning/enhanced_logger.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+[AUTO-STDOUT] 2026-03-29T09:38:43.976Z: [2026-03-29 09:38:43,976] DEBUG: Using selector: EpollSelector
+
+[AUTO-STDOUT] 2026-03-29T09:38:43.980Z: [2026-03-29 09:38:43,980] INFO: 
+================================================================================
+
+[AUTO-STDOUT] 2026-03-29T09:38:43.984Z: [2026-03-29 09:38:43,980] INFO:                               SYSTEM INFORMATION                              
+[2026-03-29 09:38:43,980] INFO: ================================================================================
+[2026-03-29 09:38:43,980] INFO: Python Version: 3.11.14
+
+[AUTO-STDOUT] 2026-03-29T09:38:43.993Z: [2026-03-29 09:38:43,985] INFO: Platform: Linux-6.14.11-x86_64-with-glibc2.40
+[2026-03-29 09:38:43,990] INFO: Architecture: ('64bit', 'ELF')
+[2026-03-29 09:38:43,990] INFO: Machine: x86_64
+[2026-03-29 09:38:43,990] INFO: Node: 8c087ea0109d
+[2026-03-29 09:38:43,990] INFO: System: Linux
+[2026-03-29 09:38:43,990] INFO: Processor: 
+[2026-03-29 09:38:43,990] INFO: Current Working Directory: /home/runner/workspace/bot_source/live-cloning
+[2026-03-29 09:38:43,990] INFO: Script Location: /home/runner/workspace/bot_source/live-cloning/enhanced_logger.py
+[2026-03-29 09:38:43,990] INFO: Python Executable: /home/runner/workspace/.pythonlibs/bin/python3
+[2026-03-29 09:38:43,990] INFO: 
+================================================================================
+[2026-03-29 09:38:43,990] INFO:                             ENVIRONMENT VARIABLES                             
+[2026-03-29 09:38:43,990] INFO: ================================================================================
+[2026-03-29 09:38:43,990] INFO: TG_API_ID: 28403662
+[2026-03-29 09:38:43,990] INFO: TG_API_HASH: 079509d4...
+[2026-03-29 09:38:43,990] INFO: LIVE_CLONING_INSTANCE_ID: live_cloning_auto_1774777123163
+[2026-03-29 09:38:43,990] INFO: NODE_ENV: development
+[2026-03-29 09:38:43,990] INFO: PATH: /home/runner/workspace/node_modules/.bin:/home/runner/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-nodejs-20.20.0/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/nix/store/p2rq6p1k69hsb53mq0q8dxk32f7vs4p3-railway-3.7.0/bin:/nix/store/mxcq77rlan82dzpv3cgj0fh6qvv8ncil-bzip2-1.0.8-bin/bin:/nix/store/aa0kd17cjag4j4jfjdyiq1f1rf9nk2gm-gh-2.49.2/bin:/nix/store/a6yfhfzpmvz8v73796djqk811p4b6wan-freetype-2.13.2-dev/bin:/nix/store/0g1s8yd0biawp32fl3i7kdbi219jx6aq-openssh-9.7p1/bin:/nix/store/lja3blbngvaiik9bxifdlypilh4glzhw-openjpeg-2.5.2/bin:/nix/store/0xj7i7pnp1xyk09qg8dgsvl60gz1psyl-brotli-1.1.0/bin:/nix/store/bhkrx8pzqy12v6jmil17lkl8zgcyck0l-lcms2-2.16-bin/bin:/nix/store/8nfjxqhnqb1h4wsd07pz8ph81kskw65q-nano-8.0/bin:/nix/store/0kv8fh7h31jzp0ran1p772zfjm8znf7j-libtiff-4.6.0-bin/bin:/nix/store/lg6c3mlv18qhvsiwf0yl27ryq016w0cz-libwebp-1.4.0/bin:/nix/store/qannz09m66qpcy3ny1f4nkl4ql0g71ks-openssl-3.0.13-bin/bin:/nix/store/6i4xxaa812vsbli9jkq4mksdddrk27lw-xz-5.4.6-bin/bin:/nix/store/z8dx4c6z528qi2w1p38yzg17g8q5jnln-cargo-1.77.2/bin:/nix/store/n0g1wrj6h8g5knynm8i3832ps41snada-fontconfig-2.15.0-bin/bin:/nix/store/ic7bslpvcsh3888azrf8sxz1xzc42jwq-libjpeg-turbo-3.0.3-bin/bin:/nix/store/lmci3q5pnjkas9d2x81kd05jgmiffkn3-tk-8.6.13/bin:/nix/store/p16s3zg96afj68mfp17m03svhwmdgcz8-tcl-8.6.13/bin:/nix/store/1rdmf4lap3f82pqdlmrgj1vjs08dk5xw-libpng-apng-1.6.43-dev/bin:/nix/store/j2zdy07sb5nbiskhp5g79c93rj9076n0-rustc-wrapper-1.77.2/bin:/nix/store/cm58jpx9hqzpg0g1azm1pnif0fifk310-libdeflate-1.20/bin:/home/runner/workspace/.pythonlibs/bin:/nix/store/flbj8bq2vznkcwss7sm0ky8rd0k6kar7-python-wrapped-0.1.0/bin:/nix/store/xwg0ddq9mjf6ibwdvp93jsp0cf51z3xr-pip-wrapper/bin:/nix/store/ypy3l3k428kc1kmcw090wlbxi8vj1m8l-poetry-wrapper/bin:/nix/store/6m2322jq0rkfdnv6cm3dq8437djbfv1l-uv-0.9.5/bin:/nix/store/b1kq183rmmiv453fn6f8bfmi1drxvxba-npx/bin:/home/runner/workspace/.config/npm/node_global/bin:/home/runner/workspace/node_modules/.bin:/nix/store/1lagpgadaybvs1n2312gysg2phjk89y8-nodejs-20.20.0-wrapped/bin:/nix/store/1xk3mgscq548ypyrgm2n5kwdii92w9ql-bun-1.3.6/bin:/nix/store/61lr9izijvg30pcribjdxgjxvh3bysp4-pnpm-10.26.1/bin:/nix/store/23078nfww258q1vjxbmyak0svvxcvj4s-yarn-1.22.22/bin:/nix/store/8sa75mbvbn3kxicggyyjggmkigvzddks-prettier-3.6.2/bin:/nix/store/bgwr5i8jf8jpg75rr53rz3fqv5k8yrwp-postgresql-16.10/bin:/nix/store/ic0wha1dyxb17gvwcx7n2fgrr8496cal-pid1/bin:/nix/store/60rvdhr04h70r6dyybakaqzbwy15vwdc-replit-runtime-path/bin:/home/runner/.nix-profile/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-03-29 09:38:43,990] INFO: 
+================================================================================
+[2026-03-29 09:38:43,990] INFO:                             CONFIGURATION SOURCES                             
+[2026-03-29 09:38:43,990] INFO: ================================================================================
+[2026-03-29 09:38:43,990] INFO: Config File: config.json
+[2026-03-29 09:38:43,990] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/config.json
+[2026-03-29 09:38:43,990] INFO:   Exists: True
+[2026-03-29 09:38:43,991] INFO:   Content Keys: ['api_id', 'api_hash', 'bot_enabled', 'sudo', 'filter_words', 'add_signature', 'signature', 'entities', 'filters']
+[2026-03-29 09:38:43,991] INFO:   API ID Source: 28403662
+[2026-03-29 09:38:43,991] INFO:   API Hash Source: 079509d4...
+[2026-03-29 09:38:43,991] INFO:   Entity Links Count: 1
+[2026-03-29 09:38:43,991] INFO:   Entity Links: [[7552059010, 2592921316]]
+[2026-03-29 09:38:43,991] INFO: 
+[2026-03-29 09:38:43,991] INFO: Config File: ../config/live_cloning_persistent_settings.json
+[2026-03-29 09:38:43,991] INFO:   Full Path: /home/runner/workspace/bot_source/config/live_cloning_persistent_settings.json
+[2026-03-29 09:38:43,991] INFO:   Exists: False
+[2026-03-29 09:38:43,991] INFO: 
+[2026-03-29 09:38:43,991] INFO: Config File: ../config/bot-config.json
+[2026-03-29 09:38:43,991] INFO:   Full Path: /home/runner/workspace/bot_source/config/bot-config.json
+[2026-03-29 09:38:43,991] INFO:   Exists: False
+[2026-03-29 09:38:43,991] INFO: 
+[2026-03-29 09:38:43,991] INFO: Config File: plugins/jsons/config.json
+[2026-03-29 09:38:43,991] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/plugins/jsons/config.json
+[2026-03-29 09:38:43,991] INFO:   Exists: True
+[2026-03-29 09:38:43,991] INFO:   Content Keys: ['api_id', 'api_hash', 'bot_enabled', 'sudo', 'filter_words', 'add_signature', 'signature']
+[2026-03-29 09:38:43,991] INFO:   API ID Source: 
+[2026-03-29 09:38:43,991] INFO:   API Hash Source: ...
+[2026-03-29 09:38:43,991] INFO: 
+[2026-03-29 09:38:43,991] INFO: Config File: plugins/jsons/entities.json
+[2026-03-29 09:38:43,991] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/plugins/jsons/entities.json
+[2026-03-29 09:38:43,991] INFO:   Exists: True
+[2026-03-29 09:38:43,991] INFO:   Content Keys: ['entities']
+[2026-03-29 09:38:43,991] INFO:   Entity Links Count: 0
+[2026-03-29 09:38:43,991] INFO:   Entity Links: []
+[2026-03-29 09:38:43,991] INFO: 
+[2026-03-29 09:38:43,991] INFO: 🚀 DIRECT AUTO-START - NO VALIDATION REQUIRED!
+[2026-03-29 09:38:43,992] INFO: Connected Account: 28403662
+[2026-03-29 09:38:43,992] INFO: Entity Links: 1
+[2026-03-29 09:38:43,992] INFO: 🚀 STARTING LIVE CLONING - AUTO-START GUARANTEED!
+[2026-03-29 09:38:43,992] INFO: 
+================================================================================
+[2026-03-29 09:38:43,992] INFO:                                CLIENT CREATION                                
+[2026-03-29 09:38:43,992] INFO: ================================================================================
+[2026-03-29 09:38:43,992] INFO: Creating TelegramClient with API ID: 28403662
+[2026-03-29 09:38:43,992] INFO: API Hash: 079509d4...
+[2026-03-29 09:38:43,992] INFO: Session String Length: 353
+[2026-03-29 09:38:43,993] INFO: Connecting to 91.108.56.171:443/TcpFull...
+[2026-03-29 09:38:43,993] DEBUG: Connection attempt 1...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.078Z: [2026-03-29 09:38:44,074] DEBUG: Connection success!
+[2026-03-29 09:38:44,074] DEBUG: Starting send loop
+[2026-03-29 09:38:44,074] DEBUG: Starting receive loop
+[2026-03-29 09:38:44,074] INFO: Connection to 91.108.56.171:443/TcpFull complete!
+[2026-03-29 09:38:44,074] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,075] DEBUG: Assigned msg_id = 7622609705568912096 to InvokeWithLayerRequest (7f2f9aca8c50)
+[2026-03-29 09:38:44,075] DEBUG: Encrypting 1 message(s) in 80 bytes for sending
+[2026-03-29 09:38:44,075] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,075] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,075] DEBUG: Receiving items from the network...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.207Z: [2026-03-29 09:38:44,205] DEBUG: Handling bad salt for message 7622609705568912096
+[2026-03-29 09:38:44,205] DEBUG: 1 message(s) will be resent
+[2026-03-29 09:38:44,205] DEBUG: Receiving items from the network...
+[2026-03-29 09:38:44,205] DEBUG: Assigned msg_id = 7622609706091933796 to InvokeWithLayerRequest (7f2f9aca8c50)
+[2026-03-29 09:38:44,205] DEBUG: Encrypting 1 message(s) in 80 bytes for sending
+[2026-03-29 09:38:44,206] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,206] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,206] DEBUG: Assigned msg_id = 7622609706094554492 to MsgsAck (7f2f9a73f6d0)
+[2026-03-29 09:38:44,206] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+[2026-03-29 09:38:44,206] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,206] DEBUG: Waiting for messages to send...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.276Z: [2026-03-29 09:38:44,275] DEBUG: Handling container
+[2026-03-29 09:38:44,275] DEBUG: Handling new session created
+[2026-03-29 09:38:44,275] DEBUG: Handling acknowledge for [7622609706091933796]
+[2026-03-29 09:38:44,275] DEBUG: Receiving items from the network...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.289Z: [2026-03-29 09:38:44,288] DEBUG: Handling RPC result for message 7622609706091933796
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.289Z: [2026-03-29 09:38:44,289] DEBUG: Receiving items from the network...
+[2026-03-29 09:38:44,289] DEBUG: Assigned msg_id = 7622609706426669664 to GetUsersRequest (7f2f9aca8c50)
+[2026-03-29 09:38:44,289] DEBUG: Encrypting 1 message(s) in 32 bytes for sending
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.292Z: [2026-03-29 09:38:44,289] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,290] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,290] DEBUG: Assigned msg_id = 7622609706429189272 to MsgsAck (7f2f9a77fdd0)
+[2026-03-29 09:38:44,290] DEBUG: Encrypting 1 message(s) in 60 bytes for sending
+[2026-03-29 09:38:44,290] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,290] DEBUG: Waiting for messages to send...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.361Z: [2026-03-29 09:38:44,360] DEBUG: Handling RPC result for message 7622609706426669664
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.364Z: [2026-03-29 09:38:44,361] DEBUG: Receiving items from the network...
+[2026-03-29 09:38:44,361] DEBUG: Assigned msg_id = 7622609706713860104 to MsgsAck (7f2f9a77fd50)
+[2026-03-29 09:38:44,361] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+[2026-03-29 09:38:44,361] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,361] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,361] DEBUG: Assigned msg_id = 7622609706716275760 to MsgsAck (7f2f9a77fd90)
+[2026-03-29 09:38:44,361] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+[2026-03-29 09:38:44,362] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,362] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,362] DEBUG: Assigned msg_id = 7622609706719150136 to GetUsersRequest (7f2f9a78c390)
+[2026-03-29 09:38:44,362] DEBUG: Encrypting 1 message(s) in 32 bytes for sending
+[2026-03-29 09:38:44,363] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,363] DEBUG: Waiting for messages to send...
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.439Z: [2026-03-29 09:38:44,439] DEBUG: Handling RPC result for message 7622609706719150136
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.441Z: [2026-03-29 09:38:44,439] DEBUG: Receiving items from the network...
+[2026-03-29 09:38:44,439] DEBUG: Assigned msg_id = 7622609707028856824 to MsgsAck (7f2f9a77f950)
+[2026-03-29 09:38:44,440] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+[2026-03-29 09:38:44,440] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 09:38:44,440] DEBUG: Waiting for messages to send...
+[2026-03-29 09:38:44,440] DEBUG: Assigned msg_id = 7622609707031227656 to MsgsAck (7f2f9a78c550)
+[2026-03-29 09:38:44,440] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[AUTO-STDOUT] 2026-03-29T09:38:44.442Z: Please enter your phone (or bot token): 

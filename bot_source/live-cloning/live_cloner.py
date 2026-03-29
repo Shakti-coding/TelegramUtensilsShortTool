@@ -153,8 +153,8 @@ class LiveCloner:
             
             client = TelegramClient(StringSession(self.session_string), self.config["api_id"], self.config["api_hash"])
             
-            # Start client with session string
-            await client.start()
+            # Use connect() instead of start() to avoid phone number prompt
+            await client.connect()
             
             if await client.is_user_authorized():
                 me = await client.get_me()
@@ -168,7 +168,7 @@ class LiveCloner:
                 return {"success": True, "userInfo": user_info}
             else:
                 await client.disconnect()
-                return {"success": False, "error": "Session not authorized"}
+                return {"success": False, "error": "Session is expired or invalid. Please generate a new session string."}
                 
         except Exception as e:
             logging.error(f"Session test failed: {e}")
@@ -188,11 +188,11 @@ class LiveCloner:
             
             self.client = TelegramClient(StringSession(self.session_string), self.config["api_id"], self.config["api_hash"])
             
-            # Start client with session string
-            await self.client.start()
+            # Use connect() instead of start() to avoid interactive phone number prompt
+            await self.client.connect()
             
             if not await self.client.is_user_authorized():
-                raise ValueError("Session is not authorized")
+                raise ValueError("Session string is expired or invalid. Please generate a new session string from the Session Generator tab.")
             
             me = await self.client.get_me()
             user_info = {
@@ -249,6 +249,7 @@ class LiveCloner:
             logging.info(f"🔍 Pre-resolving {len(entities)} entity link pairs...")
             resolved_count = 0
             failed_entities = []
+            entity_id_to_name = {}
             
             # Collect all unique entity IDs from configured links
             unique_entities = set()
@@ -262,7 +263,10 @@ class LiveCloner:
                 try:
                     resolved_entity = await self.client.get_entity(entity_id)
                     entity_name = getattr(resolved_entity, 'title', getattr(resolved_entity, 'first_name', f'ID:{entity_id}'))
-                    logging.info(f"✅ Resolved entity: {entity_id} -> {entity_name}")
+                    entity_username = getattr(resolved_entity, 'username', None)
+                    display_name = f"@{entity_username}" if entity_username else entity_name
+                    entity_id_to_name[entity_id] = display_name
+                    logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name})")
                     
                     # COMPREHENSIVE LOGGING: Log successful resolution
                     comprehensive_logger.log_entity_resolution_attempt(entity_id, True, resolved_entity)
@@ -270,6 +274,7 @@ class LiveCloner:
                     
                 except Exception as e:
                     logging.error(f"❌ Failed to resolve entity {entity_id}: {e}")
+                    entity_id_to_name[entity_id] = f"ID:{entity_id}"
                     failed_entities.append(entity_id)
                     
                     # COMPREHENSIVE LOGGING: Log failed resolution with detailed error
@@ -277,9 +282,20 @@ class LiveCloner:
             
             if failed_entities:
                 logging.warning(f"⚠️ {len(failed_entities)} entities could not be resolved: {failed_entities}")
-                logging.warning("💡 Make sure the bot is joined to all channels/groups and try the Sync command")
+                logging.warning("💡 Make sure the account is a member of all channels/groups")
             
             logging.info(f"✅ Pre-resolution complete: {resolved_count}/{len(unique_entities)} entities resolved")
+            
+            # Log all forwarding pairs in human-readable format
+            logging.info("=" * 60)
+            logging.info("📋 ACTIVE FORWARDING PAIRS:")
+            for i, entity_pair in enumerate(entities, 1):
+                if len(entity_pair) >= 2:
+                    from_id, to_id = entity_pair[0], entity_pair[1]
+                    from_name = entity_id_to_name.get(from_id, f"ID:{from_id}")
+                    to_name = entity_id_to_name.get(to_id, f"ID:{to_id}")
+                    logging.info(f"  [{i}] {from_name} ➜ {to_name}")
+            logging.info("=" * 60)
             
         except Exception as e:
             logging.error(f"❌ Error during entity pre-resolution: {e}")
