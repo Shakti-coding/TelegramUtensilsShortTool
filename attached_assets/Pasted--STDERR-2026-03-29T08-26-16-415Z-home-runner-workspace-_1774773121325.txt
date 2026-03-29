@@ -1,0 +1,309 @@
+[STDERR] 2026-03-29T08:26:16.415Z: /home/runner/workspace/bot_source/live-cloning/enhanced_logger.py:15: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  import pkg_resources
+
+[STDOUT] 2026-03-29T08:26:16.429Z: [2026-03-29 08:26:16,429] DEBUG: Using selector: EpollSelector
+
+[STDOUT] 2026-03-29T08:26:16.432Z: [2026-03-29 08:26:16,432] INFO: 
+================================================================================
+
+[STDOUT] 2026-03-29T08:26:16.432Z: [2026-03-29 08:26:16,432] INFO:                               SYSTEM INFORMATION                              
+[2026-03-29 08:26:16,432] INFO: ================================================================================
+[2026-03-29 08:26:16,432] INFO: Python Version: 3.11.14
+
+[STDOUT] 2026-03-29T08:26:16.435Z: [2026-03-29 08:26:16,435] INFO: Platform: Linux-6.14.11-x86_64-with-glibc2.40
+
+[STDOUT] 2026-03-29T08:26:16.440Z: [2026-03-29 08:26:16,440] INFO: Architecture: ('64bit', 'ELF')
+
+[STDOUT] 2026-03-29T08:26:16.440Z: [2026-03-29 08:26:16,440] INFO: Machine: x86_64
+[2026-03-29 08:26:16,440] INFO: Node: 4b9f2e802266
+[2026-03-29 08:26:16,440] INFO: System: Linux
+[2026-03-29 08:26:16,440] INFO: Processor: 
+[2026-03-29 08:26:16,440] INFO: Current Working Directory: /home/runner/workspace/bot_source/live-cloning
+[2026-03-29 08:26:16,440] INFO: Script Location: /home/runner/workspace/bot_source/live-cloning/enhanced_logger.py
+
+[STDOUT] 2026-03-29T08:26:16.440Z: [2026-03-29 08:26:16,440] INFO: Python Executable: /home/runner/workspace/.pythonlibs/bin/python3
+[2026-03-29 08:26:16,440] INFO: 
+================================================================================
+[2026-03-29 08:26:16,440] INFO:                             ENVIRONMENT VARIABLES                             
+[2026-03-29 08:26:16,440] INFO: ================================================================================
+
+[STDOUT] 2026-03-29T08:26:16.441Z: [2026-03-29 08:26:16,440] INFO: TG_API_ID: 28403662
+[2026-03-29 08:26:16,441] INFO: TG_API_HASH: 079509d4...
+
+[STDOUT] 2026-03-29T08:26:16.441Z: [2026-03-29 08:26:16,441] INFO: LIVE_CLONING_INSTANCE_ID: None
+[2026-03-29 08:26:16,441] INFO: NODE_ENV: development
+[2026-03-29 08:26:16,441] INFO: PATH: /home/runner/workspace/node_modules/.bin:/home/runner/node_modules/.bin:/home/node_modules/.bin:/node_modules/.bin:/nix/store/jfar9wnj6kvr0gr6klh1gk7vgckkfr5j-nodejs-20.20.0/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/nix/store/p2rq6p1k69hsb53mq0q8dxk32f7vs4p3-railway-3.7.0/bin:/nix/store/mxcq77rlan82dzpv3cgj0fh6qvv8ncil-bzip2-1.0.8-bin/bin:/nix/store/aa0kd17cjag4j4jfjdyiq1f1rf9nk2gm-gh-2.49.2/bin:/nix/store/a6yfhfzpmvz8v73796djqk811p4b6wan-freetype-2.13.2-dev/bin:/nix/store/0g1s8yd0biawp32fl3i7kdbi219jx6aq-openssh-9.7p1/bin:/nix/store/lja3blbngvaiik9bxifdlypilh4glzhw-openjpeg-2.5.2/bin:/nix/store/0xj7i7pnp1xyk09qg8dgsvl60gz1psyl-brotli-1.1.0/bin:/nix/store/bhkrx8pzqy12v6jmil17lkl8zgcyck0l-lcms2-2.16-bin/bin:/nix/store/8nfjxqhnqb1h4wsd07pz8ph81kskw65q-nano-8.0/bin:/nix/store/0kv8fh7h31jzp0ran1p772zfjm8znf7j-libtiff-4.6.0-bin/bin:/nix/store/lg6c3mlv18qhvsiwf0yl27ryq016w0cz-libwebp-1.4.0/bin:/nix/store/qannz09m66qpcy3ny1f4nkl4ql0g71ks-openssl-3.0.13-bin/bin:/nix/store/6i4xxaa812vsbli9jkq4mksdddrk27lw-xz-5.4.6-bin/bin:/nix/store/z8dx4c6z528qi2w1p38yzg17g8q5jnln-cargo-1.77.2/bin:/nix/store/n0g1wrj6h8g5knynm8i3832ps41snada-fontconfig-2.15.0-bin/bin:/nix/store/ic7bslpvcsh3888azrf8sxz1xzc42jwq-libjpeg-turbo-3.0.3-bin/bin:/nix/store/lmci3q5pnjkas9d2x81kd05jgmiffkn3-tk-8.6.13/bin:/nix/store/p16s3zg96afj68mfp17m03svhwmdgcz8-tcl-8.6.13/bin:/nix/store/1rdmf4lap3f82pqdlmrgj1vjs08dk5xw-libpng-apng-1.6.43-dev/bin:/nix/store/j2zdy07sb5nbiskhp5g79c93rj9076n0-rustc-wrapper-1.77.2/bin:/nix/store/cm58jpx9hqzpg0g1azm1pnif0fifk310-libdeflate-1.20/bin:/nix/store/bgwr5i8jf8jpg75rr53rz3fqv5k8yrwp-postgresql-16.10/bin:/home/runner/workspace/.pythonlibs/bin:/nix/store/flbj8bq2vznkcwss7sm0ky8rd0k6kar7-python-wrapped-0.1.0/bin:/nix/store/xwg0ddq9mjf6ibwdvp93jsp0cf51z3xr-pip-wrapper/bin:/nix/store/ypy3l3k428kc1kmcw090wlbxi8vj1m8l-poetry-wrapper/bin:/nix/store/6m2322jq0rkfdnv6cm3dq8437djbfv1l-uv-0.9.5/bin:/nix/store/b1kq183rmmiv453fn6f8bfmi1drxvxba-npx/bin:/home/runner/workspace/.config/npm/node_global/bin:/home/runner/workspace/node_modules/.bin:/nix/store/1lagpgadaybvs1n2312gysg2phjk89y8-nodejs-20.20.0-wrapped/bin:/nix/store/1xk3mgscq548ypyrgm2n5kwdii92w9ql-bun-1.3.6/bin:/nix/store/61lr9izijvg30pcribjdxgjxvh3bysp4-pnpm-10.26.1/bin:/nix/store/23078nfww258q1vjxbmyak0svvxcvj4s-yarn-1.22.22/bin:/nix/store/8sa75mbvbn3kxicggyyjggmkigvzddks-prettier-3.6.2/bin:/nix/store/ic0wha1dyxb17gvwcx7n2fgrr8496cal-pid1/bin:/nix/store/60rvdhr04h70r6dyybakaqzbwy15vwdc-replit-runtime-path/bin:/home/runner/.nix-profile/bin:/home/runner/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+[2026-03-29 08:26:16,441] INFO: 
+================================================================================
+[2026-03-29 08:26:16,441] INFO:                             CONFIGURATION SOURCES                             
+[2026-03-29 08:26:16,441] INFO: ================================================================================
+[2026-03-29 08:26:16,441] INFO: Config File: config.json
+[2026-03-29 08:26:16,441] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/config.json
+[2026-03-29 08:26:16,441] INFO:   Exists: True
+[2026-03-29 08:26:16,441] INFO:   Content Keys: ['api_id', 'api_hash', 'bot_enabled', 'sudo', 'filter_words', 'add_signature', 'signature', 'entities', 'filters']
+
+[STDOUT] 2026-03-29T08:26:16.442Z: [2026-03-29 08:26:16,441] INFO:   API ID Source: 28403662
+[2026-03-29 08:26:16,441] INFO:   API Hash Source: 079509d4...
+[2026-03-29 08:26:16,441] INFO:   Entity Links Count: 1
+[2026-03-29 08:26:16,441] INFO:   Entity Links: [[2141238878, 8165704518]]
+[2026-03-29 08:26:16,441] INFO: 
+[2026-03-29 08:26:16,441] INFO: Config File: ../config/live_cloning_persistent_settings.json
+[2026-03-29 08:26:16,441] INFO:   Full Path: /home/runner/workspace/bot_source/config/live_cloning_persistent_settings.json
+[2026-03-29 08:26:16,441] INFO:   Exists: False
+[2026-03-29 08:26:16,441] INFO: 
+[2026-03-29 08:26:16,441] INFO: Config File: ../config/bot-config.json
+[2026-03-29 08:26:16,441] INFO:   Full Path: /home/runner/workspace/bot_source/config/bot-config.json
+[2026-03-29 08:26:16,441] INFO:   Exists: False
+[2026-03-29 08:26:16,441] INFO: 
+
+[STDOUT] 2026-03-29T08:26:16.442Z: [2026-03-29 08:26:16,442] INFO: Config File: plugins/jsons/config.json
+[2026-03-29 08:26:16,442] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/plugins/jsons/config.json
+[2026-03-29 08:26:16,442] INFO:   Exists: True
+[2026-03-29 08:26:16,442] INFO:   Content Keys: ['api_id', 'api_hash', 'bot_enabled', 'sudo', 'filter_words', 'add_signature', 'signature']
+[2026-03-29 08:26:16,442] INFO:   API ID Source: 
+[2026-03-29 08:26:16,442] INFO:   API Hash Source: ...
+[2026-03-29 08:26:16,442] INFO: 
+[2026-03-29 08:26:16,442] INFO: Config File: plugins/jsons/entities.json
+
+[STDOUT] 2026-03-29T08:26:16.442Z: [2026-03-29 08:26:16,442] INFO:   Full Path: /home/runner/workspace/bot_source/live-cloning/plugins/jsons/entities.json
+[2026-03-29 08:26:16,442] INFO:   Exists: True
+[2026-03-29 08:26:16,442] INFO:   Content Keys: ['entities']
+[2026-03-29 08:26:16,442] INFO:   Entity Links Count: 0
+[2026-03-29 08:26:16,442] INFO:   Entity Links: []
+[2026-03-29 08:26:16,442] INFO: 
+
+[STDOUT] 2026-03-29T08:26:16.442Z: [2026-03-29 08:26:16,442] INFO: 🚀 DIRECT AUTO-START - NO VALIDATION REQUIRED!
+[2026-03-29 08:26:16,442] INFO: Connected Account: 28403662
+[2026-03-29 08:26:16,442] INFO: Entity Links: 1
+[2026-03-29 08:26:16,442] INFO: 🚀 STARTING LIVE CLONING - AUTO-START GUARANTEED!
+
+[STDOUT] 2026-03-29T08:26:16.443Z: [2026-03-29 08:26:16,443] INFO: 
+================================================================================
+[2026-03-29 08:26:16,443] INFO:                                CLIENT CREATION                                
+[2026-03-29 08:26:16,443] INFO: ================================================================================
+
+[STDOUT] 2026-03-29T08:26:16.443Z: [2026-03-29 08:26:16,443] INFO: Creating TelegramClient with API ID: 28403662
+[2026-03-29 08:26:16,443] INFO: API Hash: 079509d4...
+[2026-03-29 08:26:16,443] INFO: Session String Length: 353
+
+[STDOUT] 2026-03-29T08:26:16.444Z: [2026-03-29 08:26:16,443] INFO: Connecting to 91.108.56.196:443/TcpFull...
+
+[STDOUT] 2026-03-29T08:26:16.444Z: [2026-03-29 08:26:16,444] DEBUG: Connection attempt 1...
+
+[STDOUT] 2026-03-29T08:26:16.509Z: [2026-03-29 08:26:16,508] DEBUG: Connection success!
+[2026-03-29 08:26:16,508] DEBUG: Starting send loop
+[2026-03-29 08:26:16,508] DEBUG: Starting receive loop
+[2026-03-29 08:26:16,508] INFO: Connection to 91.108.56.196:443/TcpFull complete!
+[2026-03-29 08:26:16,508] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,508] DEBUG: Assigned msg_id = 7622591032786771548 to InvokeWithLayerRequest (7f14c32a53d0)
+[2026-03-29 08:26:16,509] DEBUG: Encrypting 1 message(s) in 80 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.511Z: [2026-03-29 08:26:16,511] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.511Z: [2026-03-29 08:26:16,511] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,511] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.577Z: [2026-03-29 08:26:16,576] DEBUG: Handling bad salt for message 7622591032786771548
+
+[STDOUT] 2026-03-29T08:26:16.577Z: [2026-03-29 08:26:16,576] DEBUG: 1 message(s) will be resent
+[2026-03-29 08:26:16,577] DEBUG: Receiving items from the network...
+[2026-03-29 08:26:16,577] DEBUG: Assigned msg_id = 7622591033059524312 to InvokeWithLayerRequest (7f14c32a53d0)
+[2026-03-29 08:26:16,577] DEBUG: Encrypting 1 message(s) in 80 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.578Z: [2026-03-29 08:26:16,577] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,577] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,577] DEBUG: Assigned msg_id = 7622591033062413944 to MsgsAck (7f14c53e40d0)
+[2026-03-29 08:26:16,577] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.578Z: [2026-03-29 08:26:16,578] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,578] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:16.644Z: [2026-03-29 08:26:16,644] DEBUG: Handling container
+
+[STDOUT] 2026-03-29T08:26:16.644Z: [2026-03-29 08:26:16,644] DEBUG: Handling new session created
+[2026-03-29 08:26:16,644] DEBUG: Handling acknowledge for [7622591033059524312]
+[2026-03-29 08:26:16,644] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.655Z: [2026-03-29 08:26:16,655] DEBUG: Handling RPC result for message 7622591033059524312
+
+[STDOUT] 2026-03-29T08:26:16.655Z: [2026-03-29 08:26:16,655] DEBUG: Receiving items from the network...
+[2026-03-29 08:26:16,655] DEBUG: Assigned msg_id = 7622591033374258772 to GetUsersRequest (7f14c32a53d0)
+[2026-03-29 08:26:16,655] DEBUG: Encrypting 1 message(s) in 32 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.658Z: [2026-03-29 08:26:16,656] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,656] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,656] DEBUG: Assigned msg_id = 7622591033377450720 to MsgsAck (7f14c39c7490)
+[2026-03-29 08:26:16,656] DEBUG: Encrypting 1 message(s) in 60 bytes for sending
+[2026-03-29 08:26:16,657] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,657] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:16.760Z: [2026-03-29 08:26:16,759] DEBUG: Handling RPC result for message 7622591033374258772
+
+[STDOUT] 2026-03-29T08:26:16.760Z: [2026-03-29 08:26:16,760] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.760Z: [2026-03-29 08:26:16,760] DEBUG: Assigned msg_id = 7622591033792773976 to GetStateRequest (7f14c49c84d0)
+
+[STDOUT] 2026-03-29T08:26:16.760Z: [2026-03-29 08:26:16,760] DEBUG: Encrypting 1 message(s) in 20 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.761Z: [2026-03-29 08:26:16,760] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,761] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,761] DEBUG: Assigned msg_id = 7622591033795689360 to MsgsAck (7f14c32a53d0)
+[2026-03-29 08:26:16,761] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.761Z: [2026-03-29 08:26:16,761] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.761Z: [2026-03-29 08:26:16,761] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:16.835Z: [2026-03-29 08:26:16,835] DEBUG: Handling RPC result for message 7622591033792773976
+
+[STDOUT] 2026-03-29T08:26:16.836Z: [2026-03-29 08:26:16,835] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.836Z: [2026-03-29 08:26:16,836] DEBUG: Assigned msg_id = 7622591034095411076 to GetDifferenceRequest (7f14c49c84d0)
+[2026-03-29 08:26:16,836] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.836Z: [2026-03-29 08:26:16,836] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.836Z: [2026-03-29 08:26:16,836] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,836] DEBUG: Assigned msg_id = 7622591034098509564 to MsgsAck (7f14c32a7810)
+
+[STDOUT] 2026-03-29T08:26:16.836Z: [2026-03-29 08:26:16,836] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.837Z: [2026-03-29 08:26:16,837] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.837Z: [2026-03-29 08:26:16,837] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:16.909Z: [2026-03-29 08:26:16,909] DEBUG: Handling RPC result for message 7622591034095411076
+
+[STDOUT] 2026-03-29T08:26:16.910Z: [2026-03-29 08:26:16,909] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.910Z: [2026-03-29 08:26:16,910] DEBUG: Assigned msg_id = 7622591034392140164 to GetUsersRequest (7f14c32a7ed0)
+
+[STDOUT] 2026-03-29T08:26:16.910Z: [2026-03-29 08:26:16,910] DEBUG: Encrypting 1 message(s) in 32 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.911Z: [2026-03-29 08:26:16,910] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,910] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,911] DEBUG: Assigned msg_id = 7622591034395148052 to MsgsAck (7f14c32b8410)
+[2026-03-29 08:26:16,911] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.911Z: [2026-03-29 08:26:16,911] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:16,911] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:16.982Z: [2026-03-29 08:26:16,982] DEBUG: Handling RPC result for message 7622591034392140164
+
+[STDOUT] 2026-03-29T08:26:16.982Z: [2026-03-29 08:26:16,982] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:16.983Z: [2026-03-29 08:26:16,983] DEBUG: Assigned msg_id = 7622591034683087124 to GetUsersRequest (7f14c32a7ed0)
+
+[STDOUT] 2026-03-29T08:26:16.983Z: [2026-03-29 08:26:16,983] DEBUG: Encrypting 1 message(s) in 32 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.983Z: [2026-03-29 08:26:16,983] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.983Z: [2026-03-29 08:26:16,983] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:16,983] DEBUG: Assigned msg_id = 7622591034686113132 to MsgsAck (7f14c325ff50)
+[2026-03-29 08:26:16,983] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:16.984Z: [2026-03-29 08:26:16,984] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:16.984Z: [2026-03-29 08:26:16,984] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,057] DEBUG: Handling RPC result for message 7622591034683087124
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,058] DEBUG: Receiving items from the network...
+[2026-03-29 08:26:17,058] INFO: 
+================================================================================
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,058] INFO:                           CLIENT CONNECTION DETAILS                           
+[2026-03-29 08:26:17,058] INFO: ================================================================================
+[2026-03-29 08:26:17,058] INFO: Connected User ID: 6956029558
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,058] INFO: Connected Username: Ashaktihvc
+[2026-03-29 08:26:17,058] INFO: Connected First Name: Savan
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,058] INFO: Connected Last Name: 
+[2026-03-29 08:26:17,058] INFO: Client Connection State: True
+
+[STDOUT] 2026-03-29T08:26:17.058Z: [2026-03-29 08:26:17,058] INFO: Client DC ID: Unknown
+[2026-03-29 08:26:17,058] INFO: Client Session: StringSession
+
+[STDOUT] 2026-03-29T08:26:17.059Z: [2026-03-29 08:26:17,058] INFO: Connected as: Savan (@Ashaktihvc) - ID: 6956029558
+[2026-03-29 08:26:17,058] INFO: 🔄 Syncing dialogs to load entities...
+[2026-03-29 08:26:17,059] DEBUG: Assigned msg_id = 7622591035282358544 to GetDialogsRequest (7f14c53e4f10)
+[2026-03-29 08:26:17,059] DEBUG: Encrypting 1 message(s) in 48 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:17.059Z: [2026-03-29 08:26:17,059] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:17.059Z: [2026-03-29 08:26:17,059] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:17,059] DEBUG: Assigned msg_id = 7622591035285594360 to MsgsAck (7f14c39c2fd0)
+
+[STDOUT] 2026-03-29T08:26:17.060Z: [2026-03-29 08:26:17,059] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:17.060Z: [2026-03-29 08:26:17,060] DEBUG: Encrypted messages put in a queue to be sent
+
+[STDOUT] 2026-03-29T08:26:17.060Z: [2026-03-29 08:26:17,060] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:17.390Z: [2026-03-29 08:26:17,390] DEBUG: Handling RPC result for message 7622591035282358544
+
+[STDOUT] 2026-03-29T08:26:17.395Z: [2026-03-29 08:26:17,395] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:17.397Z: [2026-03-29 08:26:17,397] INFO: ✅ Successfully synced 72 chats - entities are now available
+
+[STDOUT] 2026-03-29T08:26:17.398Z: [2026-03-29 08:26:17,397] INFO: 
+================================================================================
+[2026-03-29 08:26:17,397] INFO:                            DIALOGS SYNCHRONIZATION                            
+[2026-03-29 08:26:17,397] INFO: ================================================================================
+[2026-03-29 08:26:17,397] INFO: Total Dialogs Synced: 72
+[2026-03-29 08:26:17,398] INFO: Dialog Details:
+
+[STDOUT] 2026-03-29T08:26:17.398Z: [2026-03-29 08:26:17,398] INFO:   1. Testing (ID: 8154976061, Type: User)
+[2026-03-29 08:26:17,398] INFO:   2. AudioBook (ID: 7552059010, Type: User)
+[2026-03-29 08:26:17,398] INFO:   3. Telegram (ID: 777000, Type: User)
+
+[STDOUT] 2026-03-29T08:26:17.398Z: [2026-03-29 08:26:17,398] INFO:   4. Savan (ID: 6956029558, Type: User)
+[2026-03-29 08:26:17,398] INFO:   5. NEW NCERT PUNCH 4.0 PW (ID: 2592921316, Type: Channel)
+
+[STDOUT] 2026-03-29T08:26:17.398Z: [2026-03-29 08:26:17,398] INFO:   6. LAKSHYA NEET BATCH 2027 (ID: 1931029132, Type: Channel)
+[2026-03-29 08:26:17,398] INFO:   7. Pw Yakeen Test Series Paper 2026 (ID: 2256408255, Type: Channel)
+[2026-03-29 08:26:17,398] INFO:   8. PW AITS NEET TEST SERIES 2026 (ID: 2186541033, Type: Channel)
+[2026-03-29 08:26:17,398] INFO:   9. Pw Real Test Series 2026 (ID: 1992859101, Type: Channel)
+[2026-03-29 08:26:17,398] INFO:   10. PW ARJUNA NEET TEST SERIES 2026 (ID: 2976115651, Type: Channel)
+[2026-03-29 08:26:17,398] INFO:   ... and 62 more dialogs
+
+[STDOUT] 2026-03-29T08:26:17.398Z: [2026-03-29 08:26:17,398] INFO: 
+================================================================================
+[2026-03-29 08:26:17,398] INFO:                           ENTITY RESOLUTION PROCESS                           
+[2026-03-29 08:26:17,398] INFO: ================================================================================
+[2026-03-29 08:26:17,398] INFO: Total Entity Pairs to Process: 1
+[2026-03-29 08:26:17,398] INFO: Unique Entity IDs: ['2141238878', '8165704518']
+
+[STDOUT] 2026-03-29T08:26:17.399Z: [2026-03-29 08:26:17,398] INFO: Entity ID: 2141238878
+[2026-03-29 08:26:17,398] INFO:   Type: <class 'str'>
+[2026-03-29 08:26:17,398] ERROR: ❌ Error during entity pre-resolution: '<=' not supported between instances of 'int' and 'str'
+[2026-03-29 08:26:17,398] ERROR: ENTITY PRE-RESOLUTION FAILED: '<=' not supported between instances of 'int' and 'str'
+
+[STDOUT] 2026-03-29T08:26:17.400Z: [2026-03-29 08:26:17,400] INFO: LIVE CLONING BOT STARTED! 🚀
+
+[STDOUT] 2026-03-29T08:26:17.400Z: [2026-03-29 08:26:17,400] DEBUG: Assigned msg_id = 7622591036648805040 to GetStateRequest (7f14c38b67d0)
+
+[STDOUT] 2026-03-29T08:26:17.400Z: [2026-03-29 08:26:17,400] DEBUG: Encrypting 1 message(s) in 20 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:17.401Z: [2026-03-29 08:26:17,401] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:17,401] DEBUG: Waiting for messages to send...
+[2026-03-29 08:26:17,401] DEBUG: Assigned msg_id = 7622591036651657480 to MsgsAck (7f14c3102950)
+
+[STDOUT] 2026-03-29T08:26:17.401Z: [2026-03-29 08:26:17,401] DEBUG: Encrypting 1 message(s) in 36 bytes for sending
+
+[STDOUT] 2026-03-29T08:26:17.402Z: [2026-03-29 08:26:17,402] DEBUG: Encrypted messages put in a queue to be sent
+[2026-03-29 08:26:17,402] DEBUG: Waiting for messages to send...
+
+[STDOUT] 2026-03-29T08:26:17.471Z: [2026-03-29 08:26:17,471] DEBUG: Handling RPC result for message 7622591036648805040
+
+[STDOUT] 2026-03-29T08:26:17.471Z: [2026-03-29 08:26:17,471] DEBUG: Receiving items from the network...
+
+[STDOUT] 2026-03-29T08:26:26.330Z: [2026-03-29 08:26:26,329] INFO: Received signal 15, shutting down gracefully...
+[2026-03-29 08:26:26,330] INFO: Disconnecting from 91.108.56.196:443/TcpFull...
+[2026-03-29 08:26:26,330] DEBUG: Closing current connection...
+
+[STDOUT] 2026-03-29T08:26:26.330Z: [2026-03-29 08:26:26,330] DEBUG: Cancelling 0 pending message(s)...
+[2026-03-29 08:26:26,330] INFO: Disconnection from 91.108.56.196:443/TcpFull complete!
+
+[STDOUT] 2026-03-29T08:26:26.331Z: [2026-03-29 08:26:26,331] INFO: Not disconnecting (already have no connection)
