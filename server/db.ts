@@ -5,15 +5,17 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
-const DATABASE_URL = process.env.DATABASE_URL || "postgresql://neondb_owner:npg_MQV6w8jJzWhs@ep-curly-bar-a608e8jh.us-west-2.aws.neon.tech/neondb?sslmode=require";
+// Priority chain: Replit/platform DB → hardcoded Neon backup → local PostgreSQL
+const DATABASE_URL = 
+  process.env.DATABASE_URL ||
+  "postgresql://neondb_owner:npg_MQV6w8jJzWhs@ep-curly-bar-a608e8jh.us-west-2.aws.neon.tech/neondb?sslmode=require";
 
 export const pool = new Pool({ connectionString: DATABASE_URL });
 export const db = drizzle({ client: pool, schema });
 
-// Initialize database tables if they don't exist
+// Initialize database tables if they don't exist - creates ALL required tables automatically
 async function initializeDatabase() {
   try {
-    // Create consoleLogs table if it doesn't exist
     await pool.query(`
       CREATE TABLE IF NOT EXISTS console_logs (
         id SERIAL PRIMARY KEY,
@@ -25,7 +27,6 @@ async function initializeDatabase() {
       );
     `);
 
-    // Create logCollections table if it doesn't exist
     await pool.query(`
       CREATE TABLE IF NOT EXISTS log_collections (
         id SERIAL PRIMARY KEY,
@@ -36,9 +37,65 @@ async function initializeDatabase() {
       );
     `);
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS text_memos (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(500) NOT NULL,
+        content TEXT NOT NULL,
+        tags TEXT DEFAULT '',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS live_cloning_instances (
+        id SERIAL PRIMARY KEY,
+        instance_id VARCHAR(255) UNIQUE NOT NULL,
+        session_string TEXT,
+        config TEXT,
+        status VARCHAR(50) DEFAULT 'inactive',
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS entity_links (
+        id SERIAL PRIMARY KEY,
+        instance_id VARCHAR(255) NOT NULL,
+        from_entity VARCHAR(500) NOT NULL,
+        to_entity VARCHAR(500) NOT NULL,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS word_filters (
+        id SERIAL PRIMARY KEY,
+        instance_id VARCHAR(255) NOT NULL,
+        from_word VARCHAR(500) NOT NULL,
+        to_word VARCHAR(500) NOT NULL,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS live_cloning_messages (
+        id SERIAL PRIMARY KEY,
+        instance_id VARCHAR(255) NOT NULL,
+        source_entity VARCHAR(500),
+        target_entity VARCHAR(500),
+        message_id INTEGER,
+        forwarded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+    `);
+
     console.log('✅ Database tables initialized successfully');
   } catch (error) {
-    console.warn('⚠️ Database initialization failed (tables may already exist):', error);
+    console.warn('⚠️ Database initialization warning:', (error as Error).message);
   }
 }
 

@@ -219,18 +219,23 @@ class ComprehensiveLogger:
         
         # Log entity ID analysis
         for entity_id in unique_entities:
+            try:
+                entity_id_int = int(entity_id)
+            except (ValueError, TypeError):
+                entity_id_int = None
             self.logger.info(f"Entity ID: {entity_id}")
             self.logger.info(f"  Type: {type(entity_id)}")
-            self.logger.info(f"  Value Range Check: {-2147483648 <= entity_id <= 2147483647}")
-            self.logger.info(f"  Is 32-bit safe: {-2147483648 <= entity_id <= 2147483647}")
-            self.logger.info(f"  Is 64-bit: {entity_id > 2147483647}")
-            
-            # Log binary representation
-            try:
-                self.logger.info(f"  Binary: {bin(entity_id)}")
-                self.logger.info(f"  Hex: {hex(entity_id)}")
-            except Exception as e:
-                self.logger.error(f"  Error converting {entity_id}: {e}")
+            if entity_id_int is not None:
+                self.logger.info(f"  Value Range Check: {-2147483648 <= entity_id_int <= 2147483647}")
+                self.logger.info(f"  Is 32-bit safe: {-2147483648 <= entity_id_int <= 2147483647}")
+                self.logger.info(f"  Is 64-bit: {entity_id_int > 2147483647}")
+                try:
+                    self.logger.info(f"  Binary: {bin(entity_id_int)}")
+                    self.logger.info(f"  Hex: {hex(entity_id_int)}")
+                except Exception as e:
+                    self.logger.error(f"  Error converting {entity_id}: {e}")
+            else:
+                self.logger.info(f"  Format: username/string (not numeric)")
                 
     def log_entity_resolution_attempt(self, entity_id: int, success: bool, result=None, error=None):
         """Log individual entity resolution attempt"""

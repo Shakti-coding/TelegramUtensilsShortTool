@@ -243,25 +243,30 @@ class LiveCloner:
                 logging.info("📝 No entity links configured, skipping pre-resolution")
                 return
             
-            # COMPREHENSIVE LOGGING: Log entity resolution process
-            comprehensive_logger.log_entity_resolution_process(entities)
+            # COMPREHENSIVE LOGGING: Log entity resolution process (wrapped to prevent crashes)
+            try:
+                comprehensive_logger.log_entity_resolution_process(entities)
+            except Exception as log_err:
+                logging.warning(f"⚠️ Entity resolution logger error (non-fatal): {log_err}")
             
             logging.info(f"🔍 Pre-resolving {len(entities)} entity link pairs...")
             resolved_count = 0
             failed_entities = []
             entity_id_to_name = {}
             
-            # Collect all unique entity IDs from configured links
+            # Collect all unique entity IDs from configured links, normalized to int or str
             unique_entities = set()
             for entity_pair in entities:
                 if len(entity_pair) >= 2:
                     unique_entities.add(entity_pair[0])  # from entity
                     unique_entities.add(entity_pair[1])  # to entity
             
-            # Resolve each unique entity
+            # Resolve each unique entity - normalize ID to int if possible
             for entity_id in unique_entities:
                 try:
-                    resolved_entity = await self.client.get_entity(entity_id)
+                    # Normalize to int if it's a numeric string
+                    normalized_id = int(entity_id) if str(entity_id).lstrip('-').isdigit() else entity_id
+                    resolved_entity = await self.client.get_entity(normalized_id)
                     entity_name = getattr(resolved_entity, 'title', getattr(resolved_entity, 'first_name', f'ID:{entity_id}'))
                     entity_username = getattr(resolved_entity, 'username', None)
                     display_name = f"@{entity_username}" if entity_username else entity_name
@@ -322,13 +327,29 @@ class LiveCloner:
             except AttributeError:
                 chat_id = message.chat_id
 
+            # Normalize chat_id to int for comparison
+            try:
+                chat_id_int = int(chat_id)
+            except (ValueError, TypeError):
+                chat_id_int = chat_id
+
             # Check if this chat has any forwarding rules
             entities = self.config.get("entities", [])
             target_entities = []
             
             for entity_pair in entities:
-                if len(entity_pair) >= 2 and entity_pair[0] == chat_id:
-                    target_entities.append(entity_pair[1])
+                if len(entity_pair) >= 2:
+                    # Normalize stored entity ID to int for comparison
+                    try:
+                        stored_id = int(entity_pair[0])
+                    except (ValueError, TypeError):
+                        stored_id = entity_pair[0]
+                    if stored_id == chat_id_int:
+                        # Normalize target ID to int
+                        try:
+                            target_entities.append(int(entity_pair[1]))
+                        except (ValueError, TypeError):
+                            target_entities.append(entity_pair[1])
 
             if not target_entities:
                 return
