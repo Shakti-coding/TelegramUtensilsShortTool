@@ -5,13 +5,8 @@
   "filter_words": true,
   "add_signature": true,
   "signature": "Final testbbb",
-  "entities": [
-    [
-      4949360302,
-      2186541033
-    ]
-  ],
+  "entities": [],
   "filters": [],
   "auto_started": true,
-  "instance_id": "live_cloning_auto_1774764971939"
+  "instance_id": "live_cloning_auto_1774770783896"
 }
