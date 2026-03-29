@@ -1,28 +1,19 @@
 [build]
-builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+builder = "NIXPACKS"
+buildCommand = "npm install && pip install --user -r bot_source/live-cloning/requirements.txt && npm run build"
 
 [deploy]
-startCommand = "npm run dev"
+startCommand = "npm start"
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
+restartPolicyMaxRetries = 5
 
-[service]
-autoDeploy = true
-
-[env]
+[environments.production.variables]
 NODE_ENV = "production"
-# PORT will be set by Railway dynamically - don't override
-FALLBACK_PORT = "5000"
-APP_LANGUAGE = "en_EN"
-# EXACT WORKSPACE SESSION STRING - Shakti_Kumar (@Ashaktihvc) for 100% replication
 RAILWAY_SESSION_STRING = "1BQAWZmxvcmEud2ViLnRlbGVncmFtLm9yZwG7MMTcAA+S5r44lkb5zLwVp8yg5VbrrBPU00A8rIY+qBb7Y4V2JlFXfrPUeSVI+0iA+w9uGxAjT0dSU2a6L2Ik4fOflXSqhobQeqO+MVv+fwBH2pvvbSWB1DTDdTGdKheALDat1/WiDkOVyOYBQ1WbQl4avZOjttF+sbB2Ls2jPu8/cvgtlhL2HH4LB+hbT8Jj5vl+MTIsuPeqColnnmV+2WQSN1GrpRr5XaoonxqGIbx4eMHGU4MxMhVzGbuM+MGmPVHTu5CCn4G4q8AMJa5ydOIVe40E22l9O5pRJLAGKdKRhf8cq9/SqUIyl3Ilq07ArSwr0ZLBAFOWJBFmtXdBtg=="
-# Use same defaults as workspace (API_ID=21, API_HASH='default_hash')
-# TG_API_ID = "28403662"  
-# TG_API_HASH = "079509d4ac7f209a1a58facd00d6ff5a"
 TG_BOT_TOKEN = "8154976061:AAGrNr6OcdMhFNhV5bCkpGfQAh0FYeJO1gE"
 TG_AUTHORIZED_USER_ID = "6956029558"
-# Use exact workspace folder structure - no volumes
+TG_API_ID = "28403662"
+TG_API_HASH = "079509d4ac7f209a1a58facd00d6ff5a"
 TG_DOWNLOAD_PATH = "/app/downloads"
 TG_SESSION = "/app/bottorrent.session"
 PATH_CONFIG = "/app/config/config.ini"
@@ -30,21 +21,15 @@ PATH_PENDING_MESSAGES = "/app/config/pending_messages.json"
 PATH_DOWNLOAD_FILES = "/app/config/download_files.json"
 TG_MAX_PARALLEL = "4"
 TG_DL_TIMEOUT = "3600"
-# YouTube paths using exact workspace structure
 YOUTUBE_AUDIO_FOLDER = "/app/downloads/youtube/audio"
 YOUTUBE_VIDEO_FOLDER = "/app/downloads/youtube/videos"
-# Enable all features exactly like workspace
 ENABLED_UNZIP = "true"
 ENABLED_UNRAR = "true"
 ENABLED_7Z = "true"
 ENABLED_YOUTUBE = "true"
 TG_PROGRESS_DOWNLOAD = "true"
-# Session paths for all components exactly like workspace
 SESSION = "/app/bottorrent.session"
 BOT_SESSION = "/app/bottorrent.session"
 LIVE_CLONING_SESSION = "/app/bot_source/live-cloning/live_cloner"
 COPIER_SESSION = "/app/tmp/config/copier"
-# Use same defaults as workspace (empty env vars = fallback to API_ID=1, API_HASH='default_hash')
-# API_ID = "28403662"
-# API_HASH = "079509d4ac7f209a1a58facd00d6ff5a"
 BOT_TOKEN = "8154976061:AAGrNr6OcdMhFNhV5bCkpGfQAh0FYeJO1gE"

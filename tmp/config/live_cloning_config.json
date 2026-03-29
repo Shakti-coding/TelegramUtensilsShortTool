@@ -3,15 +3,37 @@
   "api_hash": "079509d4ac7f209a1a58facd00d6ff5a",
   "bot_enabled": true,
   "filter_words": true,
-  "add_signature": true,
+  "add_signature": false,
   "signature": "Final testbbb",
   "entities": [
     [
-      7552059010,
-      8154976061
+      "7552059010",
+      "8154976061"
+    ],
+    [
+      "7552059010",
+      "4971189003"
+    ],
+    [
+      "7552059010",
+      "8521676106"
+    ],
+    [
+      "8521676106",
+      "8154976061"
+    ],
+    [
+      "1875643445",
+      "8154976061"
+    ],
+    [
+      "8795917716",
+      "7552059010"
+    ],
+    [
+      "7552059010",
+      "8795917716"
     ]
   ],
-  "filters": [],
-  "auto_started": true,
-  "instance_id": "live_cloning_auto_1774779557049"
+  "filters": []
 }

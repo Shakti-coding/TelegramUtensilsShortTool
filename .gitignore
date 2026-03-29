@@ -3,3 +3,12 @@ dist
 .DS_Store
 server/public
 *.tar.gz
+*.session
+tmp/
+downloads/
+*.log
+__pycache__/
+*.pyc
+.env
+config/github_pat.json
+auto_start_validation_*.json

@@ -311,10 +311,12 @@ class LiveCloner:
         
         @self.client.on(events.NewMessage(incoming=True))
         async def check_status(message: Message):
-            if not self.config.get("bot_enabled", True):
+            # When bot is ENABLED, let ALL messages through to the forwarder
+            # (matches original main.py logic exactly)
+            if self.config.get("bot_enabled", True):
                 return
             
-            # Allow messages from self and sudo users
+            # Bot is DISABLED — only allow self and sudo commands through
             if await message.get_sender() == await self.client.get_me() or message.sender_id in self.config.get("sudo", []):
                 return
             else:
