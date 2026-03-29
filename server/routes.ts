@@ -2259,7 +2259,7 @@ if __name__ == "__main__":
   // Entity Links Management
   app.post('/api/live-cloning/entity-links', async (req, res) => {
     try {
-      const { instanceId, fromEntity, toEntity } = req.body;
+      const { instanceId, fromEntity, toEntity, sessionString: requestSessionString } = req.body;
       
       if (!instanceId || !fromEntity || !toEntity) {
         return res.status(400).json({ error: 'Instance ID, from entity, and to entity are required' });
@@ -2270,9 +2270,9 @@ if __name__ == "__main__":
       let resolvedFromEntity, resolvedToEntity;
       
       try {
-        // EXACT SAME SESSION PRIORITIZATION AS AUTO-START (from startLiveCloningService)
-        // Priority: Railway-specific session > Environment > Config file > Hardcoded fallback
-        let sessionString = process.env.RAILWAY_SESSION_STRING || process.env.LIVE_CLONING_SESSION;
+        // Priority: Session from request > Railway-specific session > Environment > Config file
+        // Never fall back to hardcoded revoked session strings
+        let sessionString = requestSessionString || process.env.RAILWAY_SESSION_STRING || process.env.LIVE_CLONING_SESSION;
         
         // Try to get from persistent settings file if not in env (same as startLiveCloningService)
         if (!sessionString) {
@@ -2287,10 +2287,8 @@ if __name__ == "__main__":
           }
         }
         
-        // Fallback to hardcoded session (same as used by Python live cloning service)
         if (!sessionString) {
-          sessionString = "1BVtsOKsBu7_Sm6oqn7q_JG49VDr6uuMQDasC2-xXy1nYvv-stWa14npRKMV4rTQU2Q7CgL5VtnJodONQmvfAzo5Oj07EImJtk3pVlVa7fP8D-IKJQ4pK3_MzlhX6PHYtYWA_GFjLwbxVI6pwb9XHJEtswyfKP0LqQrbhvkZ7YNCpoGIE9-9Sg1l0F2jTnkjTc3II0puNnLtrmyvHuOR8SlqqhCzzaX9OOBxLq2TZh46rL9WGaN2ieZy_M2k0r-7Ax1ryuax4j93mKt8ulGG6tRinvzog08cABAIJawjVDmh-Rv-sxFqgmjJ2RvqfffKidfmLu8932t0vtvJgTYW21CxfLjB3ny0=";
-          console.log('Using hardcoded session string for entity resolution');
+          return res.status(400).json({ error: 'No valid Telegram session found. Please enter your session string in the Session String field and start Live Cloning first, then try adding entity links.' });
         }
 
         const telegramConfig = configReader.getTelegramConfig();
@@ -3234,6 +3232,28 @@ if __name__ == "__main__":
   // Store for active forwarding jobs
   // GitHub PAT and Sync Routes
   
+  // Path for persisting GitHub PAT across restarts
+  const githubPatFilePath = path.join(process.cwd(), 'config', 'github_pat.json');
+
+  // Load persisted PAT into storage on startup
+  (async () => {
+    try {
+      if (fs.existsSync(githubPatFilePath)) {
+        const data = JSON.parse(fs.readFileSync(githubPatFilePath, 'utf8'));
+        if (data.personalAccessToken) {
+          await storage.saveGitHubSettings('default-user', {
+            userId: 'default-user',
+            personalAccessToken: data.personalAccessToken,
+            isDefault: true,
+          });
+          console.log('✅ Loaded saved GitHub PAT from file into storage');
+        }
+      }
+    } catch (e) {
+      console.log('No saved GitHub PAT file found, using default');
+    }
+  })();
+
   // Helper function to get GitHub PAT token
   const getGitHubToken = async (req: any): Promise<string | null> => {
     // Check for PAT in Authorization header
@@ -3248,7 +3268,13 @@ if __name__ == "__main__":
       return patHeader;
     }
     
-    // Use default PAT with full GitHub permissions
+    // Check saved user PAT settings (persists in-memory, loaded from file on startup)
+    const savedSettings = await storage.getGitHubSettings('default-user');
+    if (savedSettings?.personalAccessToken) {
+      return savedSettings.personalAccessToken;
+    }
+    
+    // Fall back to environment-based default PAT
     return await storage.getDefaultGitHubPAT();
   };
   
@@ -4054,11 +4080,23 @@ if __name__ == "__main__":
         return res.status(400).json({ error: 'Invalid GitHub Personal Access Token format' });
       }
       
+      const trimmedPAT = personalAccessToken.trim();
+      
       const settings = await storage.saveGitHubSettings(userId, {
         userId,
-        personalAccessToken: personalAccessToken.trim(),
-        isDefault: false,
+        personalAccessToken: trimmedPAT,
+        isDefault: true,
       });
+      
+      // Persist to file so it survives server restarts
+      try {
+        const configDir = path.join(process.cwd(), 'config');
+        if (!fs.existsSync(configDir)) fs.mkdirSync(configDir, { recursive: true });
+        fs.writeFileSync(githubPatFilePath, JSON.stringify({ personalAccessToken: trimmedPAT, savedAt: new Date().toISOString() }, null, 2));
+        console.log('✅ GitHub PAT saved to file for persistence across restarts');
+      } catch (fileErr) {
+        console.error('⚠️ Could not persist GitHub PAT to file:', fileErr);
+      }
       
       res.json({ settings, message: 'GitHub PAT saved successfully' });
     } catch (error) {
@@ -5031,12 +5069,29 @@ ACCESS_TOKEN = "${accessToken}"
 REPO_NAME = "${repoFullName}"
 TARGET_PATH = "${targetPath}"
 
+HEADERS = {
+    'Authorization': f'Bearer {ACCESS_TOKEN}',
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'TelegramManager-PythonSync'
+}
+
 # File data
 files = [
 ${fileData}
 ]
 
-def upload_file(file_info):
+def get_default_branch():
+    """Get the default branch of the repository"""
+    url = f"{GITHUB_API}/repos/{REPO_NAME}"
+    try:
+        response = requests.get(url, headers=HEADERS)
+        if response.status_code == 200:
+            return response.json().get('default_branch', 'main')
+    except Exception as e:
+        print(f"Warning: Could not fetch repo info: {e}")
+    return 'main'
+
+def upload_file(file_info, branch):
     """Upload a single file to GitHub repository"""
     file_path = file_info['path']
     content = file_info['content']
@@ -5050,19 +5105,15 @@ def upload_file(file_info):
     
     url = f"{GITHUB_API}/repos/{REPO_NAME}/contents/{quote(full_path)}"
     
-    headers = {
-        'Authorization': f'Bearer {ACCESS_TOKEN}',
-        'Accept': 'application/vnd.github.v3+json',
-        'User-Agent': 'TelegramManager-PythonSync'
-    }
-    
-    # Check if file exists
+    # Check if file exists to get SHA for update
+    sha = None
     try:
-        response = requests.get(url, headers=headers)
-        sha = response.json().get('sha') if response.status_code == 200 else None
+        check_url = f"{url}?ref={branch}"
+        response = requests.get(check_url, headers=HEADERS)
+        if response.status_code == 200:
+            sha = response.json().get('sha')
     except Exception as e:
         print(f"Warning: Could not check existing file {full_path}: {e}")
-        sha = None
     
     # Prepare content - already base64 encoded for binary files
     if encoding == 'base64':
@@ -5073,14 +5124,14 @@ def upload_file(file_info):
     data = {
         'message': f'Upload {file_path} via Python sync',
         'content': file_content,
-        'branch': 'main'
+        'branch': branch
     }
     
     if sha:
         data['sha'] = sha
     
     try:
-        response = requests.put(url, json=data, headers=headers)
+        response = requests.put(url, json=data, headers=HEADERS)
         if response.status_code in [200, 201]:
             print(f"✅ Uploaded: {full_path}")
             return True
@@ -5096,11 +5147,15 @@ def main():
     """Main upload function"""
     print(f"Starting Python sync of {len(files)} files to {REPO_NAME}")
     
+    # Auto-detect the default branch
+    branch = get_default_branch()
+    print(f"Using branch: {branch}")
+    
     success_count = 0
     error_count = 0
     
     for file_info in files:
-        if upload_file(file_info):
+        if upload_file(file_info, branch):
             success_count += 1
         else:
             error_count += 1
@@ -5425,15 +5480,9 @@ export async function startLiveCloningService(): Promise<void> {
     // Priority: Railway-specific session > Environment > Config file > Hardcoded fallback
     let sessionString = process.env.RAILWAY_SESSION_STRING || process.env.LIVE_CLONING_SESSION || persistentSettings.sessionString;
     
-    // Fallback to hardcoded session (same as used by entity creation endpoint)
     if (!sessionString) {
-      sessionString = "1BVtsOKsBu7_Sm6oqn7q_JG49VDr6uuMQDasC2-xXy1nYvv-stWa14npRKMV4rTQU2Q7CgL5VtnJodONQmvfAzo5Oj07EImJtk3pVlVa7fP8D-IKJQ4pK3_MzlhX6PHYtYWA_GFjLwbxVI6pwb9XHJEtswyfKP0LqQrbhvkZ7YNCpoGIE9-9Sg1l0F2jTnkjTc3II0puNnLtrmyvHuOR8SlqqhCzzaX9OOBxLq2TZh46rL9WGaN2ieZy_M2k0r-7Ax1ryuax4j93mKt8ulGG6tRinvzog08cABAIJawjVDmh-Rv-sxFqgmjJ2RvqfffKidfmLu8932t0vtvJgTYW21CxfLjB3ny0=";
-      console.log('Using hardcoded session string for auto-start');
-      
-      // Save the session to persistent settings for future use
-      persistentSettings.sessionString = sessionString;
-      fs.writeFileSync(persistentConfigPath, JSON.stringify(persistentSettings, null, 2));
-      console.log('💾 Saved session string to persistent settings');
+      console.log('⚠️ No valid session string found for auto-start. Please start Live Cloning manually first to save a valid session.');
+      return;
     }
     
     // Log which session source is being used

@@ -6,8 +6,8 @@ import logging
 API_ID = int(os.getenv('TG_API_ID') or os.getenv('API_ID') or '1')
 API_HASH = os.getenv('TG_API_HASH') or os.getenv('API_HASH') or 'default_hash'
 
-# Session string with Railway conflict avoidance - use Railway-specific session when deployed
-STRING_SESSION = os.getenv('RAILWAY_SESSION_STRING') or '1BVtsOKsBu7_Sm6oqn7q_JG49VDr6uuMQDasC2-xXy1nYvv-stWa14npRKMV4rTQU2Q7CgL5VtnJodONQmvfAzo5Oj07EImJtk3pVlVa7fP8D-IKJQ4pK3_MzlhX6PHYtYWA_GFjLwbxVI6pwb9XHJEtswyfKP0LqQrbhvkZ7YNCpoGIE9-9Sg1l0F2jTnkjTc3II0puNnLtrmyvHuOR8SlqqhCzzaX9OOBxLq2TZh46rL9WGaN2ieZy_M2k0r-7Ax1ryuax4j93mKt8ulGG6tRinvzog08cABAIJawjVDmh-Rv-sxFqgmjJ2RvqfffKidfmLu8932t0vtvJgTYW21CxfLjB3ny0='
+# Session string - priority: STRING_SESSION (set by server) > RAILWAY_SESSION_STRING > hardcoded fallback
+STRING_SESSION = os.getenv('STRING_SESSION') or os.getenv('RAILWAY_SESSION_STRING') or ''
 
 # Path to config file - can be set by API
 CONFIG_PATH = os.getenv('CONFIG_PATH', 'config.ini')

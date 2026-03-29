@@ -362,7 +362,8 @@ export function LiveCloning() {
         body: JSON.stringify({ 
           instanceId,
           fromEntity: formattedFromEntity.id,
-          toEntity: formattedToEntity.id
+          toEntity: formattedToEntity.id,
+          sessionString: sessionString.trim() || undefined
         }),
       });
 
@@ -2059,13 +2060,33 @@ export function LiveCloning() {
       {showLogs && (
         <Card data-testid="logs-card">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Terminal className="w-5 h-5" />
-              Live Cloning Logs
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center gap-2">
+                <Terminal className="w-5 h-5" />
+                Live Cloning Logs
+                {logsData?.logs?.length > 0 && (
+                  <Badge variant="secondary">{logsData.logs.length} entries</Badge>
+                )}
+              </CardTitle>
               {logsData?.logs?.length > 0 && (
-                <Badge variant="secondary">{logsData.logs.length} entries</Badge>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const logText = logsData.logs.join('\n');
+                    navigator.clipboard.writeText(logText).then(() => {
+                      toast({ title: 'Logs Copied', description: 'All log entries copied to clipboard.' });
+                    }).catch(() => {
+                      toast({ title: 'Copy Failed', description: 'Could not copy logs to clipboard.', variant: 'destructive' });
+                    });
+                  }}
+                  data-testid="copy-logs-button"
+                >
+                  <Copy className="w-4 h-4 mr-1" />
+                  Copy Log
+                </Button>
               )}
-            </CardTitle>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="bg-black text-green-400 font-mono text-sm p-4 rounded-lg h-64 overflow-y-auto whitespace-pre-wrap" data-testid="logs-container">

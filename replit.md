@@ -45,3 +45,42 @@ Preferred communication style: Simple, everyday language.
 - **Development Tools**: Replit-specific plugins for development environment integration
 
 The application follows a modular architecture with clear separation between the React frontend and Express backend, connected through a well-defined API interface. The system is designed for scalability with proper database integration while maintaining offline functionality through local storage.
+
+## Key Fixes & Recent Changes
+
+### Session Generator Tab
+- New `client/src/components/session-generator.tsx` component added
+- Generates both Telethon and GramJS session strings via a step-by-step phone login flow
+- API routes: `/api/session-generator/gramjs/*` and `/api/session-generator/telethon/*`
+- Accessible via "🔑 Session Generator" in the sidebar (below Settings)
+
+### Python Copier Session Fix
+- `bot_source/python-copier/settings.py` now reads `STRING_SESSION` env var first (set by server), then falls back to `RAILWAY_SESSION_STRING`
+- Previously was reading `RAILWAY_SESSION_STRING` (not set by server) causing phone number prompts
+
+### Live Cloning - Copy Log Button
+- Added "Copy Log" button in the live-cloning logs panel header
+- Button appears when logs are available and copies all log entries to clipboard
+
+### Live Cloning - Entity Link Fix (SESSION_REVOKED)
+- Entity link POST now accepts `sessionString` from the frontend request body
+- Priority: request session > env vars > persistent settings file
+- No longer falls back to hardcoded revoked session strings
+- Frontend passes the current session string when adding entity links
+
+### Live Cloning - Auto-Start
+- Auto-start (`startLiveCloningService`) runs at server startup (server/index.ts)
+- Now gracefully skips (with log warning) if no valid session is found
+- No longer uses hardcoded revoked session for auto-start
+- Requires one manual start first to save session to `config/live_cloning_persistent_settings.json`
+
+### GitHub PAT Token Persistence
+- GitHub PAT saved to `config/github_pat.json` file when user saves it
+- Loaded from file into in-memory storage on every server restart
+- `getGitHubToken` helper now checks saved user settings before falling back to default hardcoded PAT
+- PAT now persists across server restarts without needing env vars
+
+### Python Sync Fix
+- Installed Python `requests` module (required for the generated Python upload scripts)
+- Generated Python sync script now auto-detects the repo's default branch (instead of hardcoding 'main')
+- Uses `?ref={branch}` when checking for existing files to get the correct SHA
