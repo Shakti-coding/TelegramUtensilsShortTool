@@ -78,6 +78,8 @@ class LiveCloner:
         # Setup signal handlers for graceful shutdown
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
+        # SIGUSR1 = reload config from disk (do NOT terminate — Linux default kills on unhandled SIGUSR1)
+        signal.signal(signal.SIGUSR1, self.reload_config_handler)
 
     def signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
@@ -89,6 +91,16 @@ class LiveCloner:
             except:
                 pass
         sys.exit(0)
+
+    def reload_config_handler(self, signum, frame):
+        """Handle SIGUSR1: reload config from disk without stopping the bot"""
+        try:
+            new_config = self.load_config()
+            self.config = new_config
+            entities = self.config.get("entities", [])
+            logging.info(f"🔄 Config reloaded via SIGUSR1 — {len(entities)} entity link(s) active")
+        except Exception as e:
+            logging.error(f"⚠️ Config reload failed: {e}")
 
     def load_config(self) -> Dict:
         """Load configuration from file"""
@@ -322,18 +334,31 @@ class LiveCloner:
             else:
                 raise events.StopPropagation
 
+        def normalize_peer_id(raw_id):
+            """Convert any Telegram peer ID to its raw positive form.
+            Channels can arrive as -1001931029132 (Bot API) or 1931029132 (MTProto).
+            Stored IDs are always the positive form from get_entity().id.
+            Formula: raw = abs(negative_id) - 1_000_000_000_000
+            """
+            try:
+                n = int(raw_id)
+                if n < 0:
+                    candidate = abs(n) - 1_000_000_000_000
+                    if candidate > 0:
+                        return candidate
+                return n
+            except (ValueError, TypeError):
+                return raw_id
+
         @self.client.on(events.NewMessage())
         async def forwarder(message: Message):
             try:
-                chat_id = message.chat.id if message.chat else message.chat_id
+                raw_chat_id = message.chat.id if message.chat else message.chat_id
             except AttributeError:
-                chat_id = message.chat_id
+                raw_chat_id = message.chat_id
 
-            # Normalize chat_id to int for comparison
-            try:
-                chat_id_int = int(chat_id)
-            except (ValueError, TypeError):
-                chat_id_int = chat_id
+            chat_id_norm = normalize_peer_id(raw_chat_id)
+            logging.debug(f"📨 Message received — raw_chat_id={raw_chat_id}, normalized={chat_id_norm}")
 
             # Check if this chat has any forwarding rules
             entities = self.config.get("entities", [])
@@ -341,13 +366,8 @@ class LiveCloner:
             
             for entity_pair in entities:
                 if len(entity_pair) >= 2:
-                    # Normalize stored entity ID to int for comparison
-                    try:
-                        stored_id = int(entity_pair[0])
-                    except (ValueError, TypeError):
-                        stored_id = entity_pair[0]
-                    if stored_id == chat_id_int:
-                        # Normalize target ID to int
+                    stored_norm = normalize_peer_id(entity_pair[0])
+                    if stored_norm == chat_id_norm:
                         try:
                             target_entities.append(int(entity_pair[1]))
                         except (ValueError, TypeError):
@@ -355,6 +375,8 @@ class LiveCloner:
 
             if not target_entities:
                 return
+
+            logging.info(f"✅ MATCH — forwarding from chat {chat_id_norm} to {target_entities}")
 
             # Handle polls differently
             if message.poll:

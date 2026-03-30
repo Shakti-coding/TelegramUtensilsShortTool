@@ -20,6 +20,35 @@
 13. [Key Libraries & Versions](#13-key-libraries--versions)
 
 ---
+Setup Guide -
+Deployment Guide — all three platforms:
+
+Railway (recommended — complete app works 100%)
+Steps:
+
+Push this project to GitHub
+Go to railway.app → New Project → Deploy from GitHub repo
+Add a PostgreSQL service from the Railway dashboard (it auto-sets DATABASE_URL)
+The railway.toml and nixpacks.toml files I created handle everything automatically
+Build command (auto-detected): npm install && pip install --user -r bot_source/live-cloning/requirements.txt && npm run build
+Start command (auto-detected): npm start
+Set these environment variables in Railway dashboard: TG_API_ID, TG_API_HASH, and your session string
+Vercel (frontend + REST API only — live cloning Python script won't run)
+Steps:
+
+Push to GitHub → vercel.com → Import repo
+Build command: npm run build
+Output directory: dist/public
+Add DATABASE_URL in environment variables (use Neon.tech free PostgreSQL)
+The vercel.json I created handles routing
+Note: The live cloning Python process cannot run on Vercel (serverless platform)
+GitHub Pages (static frontend display only — no backend)
+
+Only for showing the UI as a static page, the app won't function without the backend
+Run npm run build → upload dist/public folder to GitHub Pages
+Not recommended for this app
+Bottom line: Railway is the only platform from your list that runs the full app including live cloning. Use Railway.
+
 
 ## 1. Project Overview
 
