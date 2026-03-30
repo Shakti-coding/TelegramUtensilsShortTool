@@ -23,6 +23,7 @@ sys.path.append(os.path.dirname(__file__))
 from telethon.sync import TelegramClient
 from telethon import events
 from telethon.tl.custom import Message
+from telethon.tl.types import Chat as TgChat
 from telethon.errors import SessionPasswordNeededError, PhoneCodeInvalidError
 from telethon.sessions import StringSession
 
@@ -64,6 +65,9 @@ class LiveCloner:
         self.status_file = 'status.json'
         self.log_file = 'live_cloner.log'
         self.validation_report = validation_report
+        # Maps raw positive entity_id → 'chat' | 'channel' | 'user'
+        # Used to decide whether to use negative ID when forwarding to regular groups
+        self.entity_type_map: Dict[int, str] = {}
         
         # MINIMAL LOGGING FOR AUTO-START
         if not skip_validation:
@@ -283,7 +287,21 @@ class LiveCloner:
                     entity_username = getattr(resolved_entity, 'username', None)
                     display_name = f"@{entity_username}" if entity_username else entity_name
                     entity_id_to_name[entity_id] = display_name
-                    logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name})")
+                    
+                    # Record entity type so forwarder knows how to address it
+                    raw_pos_id = abs(int(normalized_id)) if str(normalized_id).lstrip('-').isdigit() else None
+                    if raw_pos_id is not None:
+                        if isinstance(resolved_entity, TgChat):
+                            self.entity_type_map[raw_pos_id] = 'chat'
+                            logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name}) [regular group]")
+                        elif getattr(resolved_entity, 'broadcast', False) or getattr(resolved_entity, 'megagroup', False):
+                            self.entity_type_map[raw_pos_id] = 'channel'
+                            logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name}) [channel/supergroup]")
+                        else:
+                            self.entity_type_map[raw_pos_id] = 'user'
+                            logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name}) [user/bot]")
+                    else:
+                        logging.info(f"✅ Resolved entity: {entity_id} -> {display_name} ({entity_name})")
                     
                     # COMPREHENSIVE LOGGING: Log successful resolution
                     comprehensive_logger.log_entity_resolution_attempt(entity_id, True, resolved_entity)
@@ -336,16 +354,23 @@ class LiveCloner:
 
         def normalize_peer_id(raw_id):
             """Convert any Telegram peer ID to its raw positive form.
-            Channels can arrive as -1001931029132 (Bot API) or 1931029132 (MTProto).
+            
+            Telegram uses three peer ID formats in events:
+            - Users/Bots:       positive int  (e.g. 6956029558)       → return as-is
+            - Channels/SGroups: -100XXXXXXXXXX (e.g. -1001931029132)  → strip -100 prefix → 1931029132
+            - Regular Groups:   -XXXXXXXXXX    (e.g. -4819106192)     → strip minus → 4819106192
+            
             Stored IDs are always the positive form from get_entity().id.
-            Formula: raw = abs(negative_id) - 1_000_000_000_000
             """
             try:
                 n = int(raw_id)
                 if n < 0:
+                    # Try channel/supergroup form: abs - 1_000_000_000_000
                     candidate = abs(n) - 1_000_000_000_000
                     if candidate > 0:
-                        return candidate
+                        return candidate  # channel/supergroup
+                    # Regular group: just -id, so strip minus
+                    return abs(n)
                 return n
             except (ValueError, TypeError):
                 return raw_id
@@ -369,7 +394,13 @@ class LiveCloner:
                     stored_norm = normalize_peer_id(entity_pair[0])
                     if stored_norm == chat_id_norm:
                         try:
-                            target_entities.append(int(entity_pair[1]))
+                            raw_target = int(entity_pair[1])
+                            pos_target = abs(raw_target)
+                            # Regular groups need negative ID for Telethon to address them correctly
+                            if self.entity_type_map.get(pos_target) == 'chat':
+                                target_entities.append(-pos_target)
+                            else:
+                                target_entities.append(pos_target)
                         except (ValueError, TypeError):
                             target_entities.append(entity_pair[1])
 
